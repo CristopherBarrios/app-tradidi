@@ -27,6 +27,12 @@ jobs:
       - name: 🛠 Build Ionic
         run: ionic build
 
+      - name: installar package
+        run: npm install @capacitor/android
+
+      - name: añadiendo plataforma android
+        run: npx cap add android
+
       - name: 📡 Sincronizar Capacitor con Android
         run: npx cap sync android
 
