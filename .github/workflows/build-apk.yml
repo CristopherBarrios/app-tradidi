@@ -1,0 +1,45 @@
+name: Build APK
+
+on:
+  push:
+    branches:
+      - main  # o master, según tu repo
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: 🧾 Clonar repositorio
+        uses: actions/checkout@v3
+
+      - name: 🧰 Instalar Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18
+
+      - name: 📦 Instalar dependencias
+        run: npm install
+
+      - name: ⚙️ Instalar Ionic y Capacitor
+        run: npm install -g @ionic/cli
+
+      - name: 🛠 Build Ionic
+        run: ionic build
+
+      - name: 📡 Sincronizar Capacitor con Android
+        run: npx cap sync android
+
+      - name: 🧱 Instalar dependencias de Android
+        run: sudo apt-get install -y openjdk-17-jdk unzip wget
+
+      - name: ☕ Configurar Gradle y compilar APK
+        run: |
+          cd android
+          ./gradlew assembleDebug
+
+      - name: 📤 Guardar APK como artefacto
+        uses: actions/upload-artifact@v3
+        with:
+          name: app-debug.apk
+          path: android/app/build/outputs/apk/debug/app-debug.apk

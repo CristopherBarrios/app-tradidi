@@ -1,0 +1,7 @@
+{
+  "name": "tradidi",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular"
+}
